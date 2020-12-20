@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
+import { GraphInteractor } from './GraphInteractor';
 
 export class MainGraph extends Component {
   static displayName = "Test name";
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nodes: [],
+      edges: []
+    };
+  }
+
+
+  componentDidMounta() {
     let container = document.querySelector('.graphcontainer');
 
     let width = container.offsetWidth;
@@ -29,18 +39,13 @@ export class MainGraph extends Component {
     ];
 
     let graphData = { nodes, edges };
-    
 
-    Graph = new GraphInteractor(".graph-container", "test", graphData.nodes, graphData.edges, true);
-  }
-
-  fetchData() {
-    
+    this.setState(graphData);
   }
 
   render () {
     return (
-        <div class="graphcontainer"></div>
+      <GraphInteractor nodes={this.state.nodes} edges={this.state.nodes} />
     );
   }
 }
