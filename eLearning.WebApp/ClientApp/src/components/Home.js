@@ -6,7 +6,7 @@ export class Home extends Component {
 
   render () {
     return (
-      <div className="overlay">
+      <div>
         <MainGraph />
       </div>
     );

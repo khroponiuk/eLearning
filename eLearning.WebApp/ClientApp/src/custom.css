@@ -12,3 +12,10 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.spinner-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+}
