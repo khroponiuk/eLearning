@@ -1,22 +1,23 @@
 ﻿import * as d3 from "d3";
+import utils from './utils/utils'
 
-export var GraphInteractor = function (containerSelector, graphId, nodes, edges, editMode) {
+export var GraphInteractor = function (options) {
   var graph = this;
 
-  graph.id = graphId;
-  graph.editMode = editMode || false;
+  graph.id = options.graphId;
+  graph.editMode = options.editMode || false;
 
-  graph.nodes = nodes || [];
-  graph.edges = edges || [];
+  graph.nodes = options.nodes || [];
+  graph.edges = options.edges || [];
   graph.scale = 1;
   graph.translate = [0, 0];
 
   graph.state = getInitialState();
 
-  var svg = d3.select(containerSelector).select('svg');
+  var svg = d3.select(options.containerSelector).select('svg');
 
   graph.svg = svg;
-  graph.svgG = d3.select(containerSelector).select('g');
+  graph.svgG = d3.select(options.containerSelector).select('g');
   var svgG = graph.svgG;
 
   // line displayed when dragging between nodes
@@ -65,7 +66,7 @@ export var GraphInteractor = function (containerSelector, graphId, nodes, edges,
       graph.dragMove.call(graph, args);
     });
 
-  if (editMode)
+  if (options.editMode)
     graph.initializeEditorEventListeners(svg);
   else
     graph.initializeInteractorEventListeners(svg);
@@ -386,18 +387,12 @@ GraphInteractor.prototype.svgMouseUp = function () {
 };
 
 GraphInteractor.prototype.addNode = function () {
-  var graph = this, topicId;
-
-  // $.ajax({
-  //     type: "GET",
-  //     url: '/Courses/GenerateTopic',
-  //     async: false,
-  //     success: function (response) { topicId = response; }
-  // });
+  var graph = this,
+      nodeId = utils.generateGuid();
 
   var xyCoords = d3.mouse(graph.svgG.node()),
     d = {
-      id: topicId,
+      id: nodeId,
       title: "Topic",
       x: xyCoords[0],
       y: xyCoords[1]
@@ -598,6 +593,6 @@ GraphInteractor.prototype.updateWindow = function (svg) {
   //var y = window.innerHeight || docEl.clientHeight || bodyEl.clientHeight;
   //svg.attr("width", 960).attr("height", 500);
 
-  var container = document.querySelector('body .container');
-  svg.attr("width", container.clientWidth).attr("height", container.clientWidth / 2);
+  //var container = document.querySelector('body .container');
+  //svg.attr("width", container.clientWidth).attr("height", container.clientWidth / 2);
 };

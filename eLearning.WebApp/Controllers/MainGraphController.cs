@@ -25,17 +25,9 @@ namespace eLearning.WebApp.Controllers
 
         [HttpGet]
         public Graph Get()
-        
         {
             var graph = graphManager.GetMainGraph();
             return graph;
-        }
-
-        [HttpGet]
-        [Route("secret")]
-        public IEnumerable<string> GetSecret()
-        {
-            return new List<string>() { "one", "two", "three" };
         }
     }
 }
