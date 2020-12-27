@@ -1,4 +1,5 @@
-﻿using eLearning.Core.Models;
+﻿using eLearning.Core.Entities;
+using eLearning.Core.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,41 @@ namespace eLearning.Core.Data
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
+        }
+
+        public DbSet<Graph> Graphs { get; set; }
+        public DbSet<GraphNode> GraphNodes { get; set; }
+        public DbSet<GraphEdge> GraphEdges { get; set; }
+        //#public DbSet<GraphNodeConfiguration> GraphNodeConfigurations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Seed();
+
+            ConfigureTableMapings(builder);
+            ConfigureEntityRelations(builder);
+        }
+
+        protected void ConfigureTableMapings(ModelBuilder builder)
+        {
+            builder.Entity<Graph>().ToTable("Graphs");
+            builder.Entity<GraphNode>().ToTable("GraphNodes");
+            builder.Entity<GraphEdge>().ToTable("GraphEdges");
+            builder.Entity<GraphNodeConfiguration>().ToTable("GraphNodeConfigurations");
+
+        }
+
+        protected void ConfigureEntityRelations(ModelBuilder builder)
+        {
+            builder.Entity<Graph>()
+                .HasMany(x => x.Nodes)
+                .WithOne(x => x.Graph);
+
+            builder.Entity<Graph>()
+                .HasMany(x => x.Edges)
+                .WithOne(x => x.Graph);
         }
     }
 }

@@ -1,0 +1,35 @@
+g.conceptG circle {
+  fill: #797979;
+  stroke: #43e5ff;
+  stroke-width: 3px;
+}
+
+  g.conceptG circle.open {
+    fill: #09b5bf;
+  }
+
+  g.conceptG circle.closed {
+    cursor: default;
+  }
+
+path.link {
+  fill: none;
+  stroke: #5A5859;
+  stroke-width: 6px;
+}
+
+g.connect-node circle {
+  fill: #09b5bf;
+}
+
+path.link.hidden {
+  stroke-width: 0;
+}
+
+.graph-svg-background {
+  background-color: #011e29;
+}
+
+foreignObject {
+  color: white;
+}
