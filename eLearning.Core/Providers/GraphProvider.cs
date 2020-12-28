@@ -1,5 +1,6 @@
 ﻿using eLearning.Core.Data;
 using eLearning.Core.Entities;
+using eLearning.Core.Providers.GraphUpdateStrategies;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,10 @@ namespace eLearning.Core.Providers
 
         public Graph Get(Guid graphId)
         {
-            return dbContext.Graphs.FirstOrDefault(x => x.Id == graphId);
+            return dbContext.Graphs
+                .Include(x => x.Nodes)
+                .Include(x => x.Edges)
+                .FirstOrDefault(x => x.Id == graphId);
         }
 
         public Graph GetMainGraph()
@@ -38,6 +42,21 @@ namespace eLearning.Core.Providers
         public Graph GetGraphNodeConfigruation(Guid graphNodeId)
         {
             return null;
+        }
+
+        internal Graph Save(Graph graph)
+        {
+            var updateStrategy = GetGraphUdateStrategy(graph);
+            
+            return updateStrategy.Execute();
+        }
+
+        private GraphUpdateStrategy GetGraphUdateStrategy(Graph graph)
+        {
+            if (graph.Type == GraphType.MainGraph)
+                return new MainGraphUpdateStrategy(dbContext, graph);
+            
+            return new CourseGraphUpdateStrategy(dbContext, graph);
         }
     }
 }

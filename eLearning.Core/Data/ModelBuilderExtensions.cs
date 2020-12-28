@@ -21,7 +21,10 @@ namespace eLearning.Core.Data
             {
                 Id = Guid.NewGuid(),
                 Name = "Main graph",
-                Type = GraphType.MainGraph
+                Type = GraphType.MainGraph,
+                Scale = 1.0,
+                TranslateX = 0,
+                TranslateY = 0
             };
 
             modelBuilder.Entity<Graph>().HasData(graph);

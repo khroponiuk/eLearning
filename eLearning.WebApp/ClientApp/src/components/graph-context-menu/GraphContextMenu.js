@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { GraphContextMenuListener } from '../graph-context-menu.js';
+import { GraphContextMenuListener } from './graph-context-menu.js';
 
 export default function GraphContextMenu(props) {
 
   useEffect(() => {
-    const listener = new GraphContextMenuListener(props.graph)
+    const listener = new GraphContextMenuListener(props.options)
   }, [])
 
   return (
@@ -17,7 +17,7 @@ export default function GraphContextMenu(props) {
       </li>
       <li className="dropdown-divider"></li>
       <li>
-        <a className="dropdown-item go-to-topic-page" tabIndex="-1" href="#">Go to linked page</a>
+        <a className="dropdown-item save-graph" tabIndex="-1" href="#">Save graph</a>
       </li>
     </ul>
   );

@@ -12,22 +12,37 @@ namespace eLearning.WebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MainGraphController : ControllerBase
+    public class GraphController : ControllerBase
     {
-        private readonly ILogger<MainGraphController> _logger;
+        private readonly ILogger<GraphController> _logger;
         private readonly GraphManager graphManager;
 
-        public MainGraphController(ILogger<MainGraphController> logger, GraphManager graphManager)
+        public GraphController(ILogger<GraphController> logger, GraphManager graphManager)
         {
             _logger = logger;
             this.graphManager = graphManager;
         }
 
         [HttpGet]
-        public Graph Get()
+        public Graph GetGraph(Guid graphId)
+        {
+            var graph = graphManager.Get(graphId);
+            return graph;
+        }
+
+        [HttpGet]
+        [Route("Main")]
+        public Graph GetMainGraph()
         {
             var graph = graphManager.GetMainGraph();
             return graph;
+        }
+
+        [HttpPost]
+        [Route("Save")]
+        public Graph SaveGraph(Graph graph)
+        {
+            return graphManager.Save(graph);
         }
     }
 }

@@ -48,5 +48,10 @@ namespace eLearning.Core.Managers
             // ...
             // SetGraphNodeCompletion(graphNodeId)
         }
+
+        public Graph Save(Graph graph)
+        {
+            return graphProvider.Save(graph);
+        }
     }
 }

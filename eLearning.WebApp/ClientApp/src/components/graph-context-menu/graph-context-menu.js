@@ -1,8 +1,10 @@
 ﻿import * as d3 from "d3";
+import api from '../../utils/api';
 
-export var GraphContextMenuListener = function (graphIneractor) {
+export var GraphContextMenuListener = function ({ graphIneractor, onNodeClickHandler }) {
   var settings = {
-    menuSelector: '#contextMenu'
+    menuSelector: '#contextMenu',
+    onNodeClickHandler: onNodeClickHandler
   };
 
   var initialize = function () {
@@ -26,8 +28,6 @@ export var GraphContextMenuListener = function (graphIneractor) {
         'position': 'absolute',
         'left': (d3.event.clientX - 10) + 'px',
         'top': (d3.event.clientY - 10) + 'px'
-        //'left': getContextMenuPosition(d3.event.clientX, 'width', 'scrollLeft') + 'px',
-        //'top': getContextMenuPosition(d3.event.clientY, 'height', 'scrollTop') + 'px'
       })
       .on('click', null)
       .on('click', function () {
@@ -44,32 +44,18 @@ export var GraphContextMenuListener = function (graphIneractor) {
           graphIneractor.addNode();
         else if (selectedMenu.classList.contains('remove-graph-element'))
           graphIneractor.removeSelectedElement();
-        else if (selectedMenu.classList.contains('go-to-topic-page'))
-          goToTopicPageClickHandler(graphIneractor.state.selectedNode);
-
-        //settings.onMenuSelected.call(this, $invokedOn, $selectedMenu);
+        else if (selectedMenu.classList.contains('save-graph'))
+          saveGraph(graphIneractor.exportData());
       });
 
     return false;
   }
 
+  const saveGraph = function(data) {
+    api.post('api/graph/save', data);
+  }
+
   var hideContextMenu = () => d3.select(settings.menuSelector).style('display', 'none');
-
-  var goToTopicPageClickHandler = function (node) {
-    if (node == null)
-      return;
-
-    //return Utils.openUrl("/Courses/TopicDetails/" + node.id, true);
-
-    createTopicPage(node);
-  }
-
-  var createTopicPage = function (node) {
-    //$.post(settings.createTopicUrl, function (connectedPageUrl) {
-    //  node.connectedPageUrl = connectedPageUrl;
-    //  Utils.openUrl(connectedPageUrl, true);
-    //});
-  }
 
   initialize();
 };

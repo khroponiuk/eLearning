@@ -5,12 +5,14 @@ export var GraphInteractor = function (options) {
   var graph = this;
 
   graph.id = options.graphId;
+  graph.type = options.graphType;
   graph.editMode = options.editMode || false;
 
   graph.nodes = options.nodes || [];
   graph.edges = options.edges || [];
-  graph.scale = 1;
-  graph.translate = [0, 0];
+  graph.scale = options.scale || 1;
+  graph.translate = options.translate || [0, 0];
+  graph.onNodeClick = options.onNodeClick;
 
   graph.state = getInitialState();
 
@@ -48,7 +50,6 @@ export var GraphInteractor = function (options) {
 
   svg.call(dragSvg).on("dblclick.zoom", null);
 
-  window.onresize = function () { graph.updateWindow(svg); };
 
   // svg nodes and edges 
   graph.paths = svgG.append("g").selectAll("g");
@@ -109,10 +110,10 @@ function getGraphConstants() {
 GraphInteractor.prototype.initializeInteractorEventListeners = function (svg) {
   var graph = this;
   svg.on('click', function (e, data, index) {
-    if (graph.state.selectedNode == null || !graph.state.selectedNode.isOpen)
+    if (graph.state.selectedNode == null)
       return;
 
-    //Utils.openUrl("/Courses/TopicDetails/" + Graph.state.selectedNode.id)
+    graph.onNodeClick(graph.state.selectedNode.id)
   });
 }
 
@@ -319,7 +320,7 @@ GraphInteractor.prototype.circleMouseUp = function (d3node, d) {
 
   if (mouseDownNode !== d) {
     // we're in a different node: create new edge for mousedown edge and add to graph
-    var newEdge = { source: mouseDownNode, target: d };
+    var newEdge = { id: utils.generateGuid(), source: mouseDownNode, target: d };
     var filtRes = graph.paths.filter(function (d) {
       if (d.source === newEdge.target && d.target === newEdge.source) {
         graph.edges.splice(graph.edges.indexOf(d), 1);
@@ -388,7 +389,7 @@ GraphInteractor.prototype.svgMouseUp = function () {
 
 GraphInteractor.prototype.addNode = function () {
   var graph = this,
-      nodeId = utils.generateGuid();
+    nodeId = utils.generateGuid();
 
   var xyCoords = d3.mouse(graph.svgG.node()),
     d = {
@@ -570,29 +571,21 @@ GraphInteractor.prototype.exportData = function () {
 
   var edges = [];
   graph.edges.forEach(function (val, i) {
-    edges.push({ sourceNodeId: val.source.id, targetNodeId: val.target.id, courseGraphId: graph.id });
+    edges.push({ id: val.id, sourceNodeId: val.source.id, targetNodeId: val.target.id, graphId: graph.id });
   });
   var nodes = [];
   graph.nodes.forEach(function (item, i) {
-    nodes.push({ nodeId: item.id, title: item.title, x: item.x, y: item.y, isCompleted: item.isCompleted, courseGraphId: graph.id });
+    nodes.push({ id: item.id, name: item.title, x: item.x, y: item.y, isCompleted: item.isCompleted, graphId: graph.id });
   });
 
   return {
-    courseGraphId: graph.id,
+    id: graph.id,
+    type: graph.type,
     scale: graph.scale,
+    translateX: graph.translate[0],
+    translateY: graph.translate[1],
     translate: graph.translate,
     nodes: nodes,
     edges: edges
   };
 }
-
-GraphInteractor.prototype.updateWindow = function (svg) {
-  //var docEl = document.documentElement,
-  //    bodyEl = document.getElementsByTagName('body')[0];
-  //var x = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
-  //var y = window.innerHeight || docEl.clientHeight || bodyEl.clientHeight;
-  //svg.attr("width", 960).attr("height", 500);
-
-  //var container = document.querySelector('body .container');
-  //svg.attr("width", container.clientWidth).attr("height", container.clientWidth / 2);
-};

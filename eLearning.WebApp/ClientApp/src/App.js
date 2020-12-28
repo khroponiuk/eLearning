@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
 import { Layout } from './components/Layout';
 import { GraphLayout } from './components/GraphLayout';
-import { Home } from './components/Home';
+import Home from './components/Home';
+import { CoursePage } from './components/CoursePage';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
@@ -22,6 +23,13 @@ export default class App extends Component {
           <GraphLayout>
             <Route exact path='/' component={Home} />
           </GraphLayout>
+        </Route>
+        <Route path='/course'>
+          <Switch>
+            <GraphLayout>
+              <Route path='/course/:id' component={CoursePage} />
+            </GraphLayout>
+          </Switch>
         </Route>
         <Route>
           <Layout>
