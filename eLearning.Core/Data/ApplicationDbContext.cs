@@ -18,6 +18,13 @@ namespace eLearning.Core.Data
         public DbSet<Graph> Graphs { get; set; }
         public DbSet<GraphNode> GraphNodes { get; set; }
         public DbSet<GraphEdge> GraphEdges { get; set; }
+
+        public DbSet<CourseTheme> CourseThemes { get; set; }
+        public DbSet<Lecture> Lectures { get; set; }
+        public DbSet<Lab> Labs { get; set; }
+        public DbSet<Quiz> Quizzes { get; set; }
+
+
         //#public DbSet<GraphNodeConfiguration> GraphNodeConfigurations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -35,6 +42,12 @@ namespace eLearning.Core.Data
             builder.Entity<Graph>().ToTable("Graphs");
             builder.Entity<GraphNode>().ToTable("GraphNodes");
             builder.Entity<GraphEdge>().ToTable("GraphEdges");
+
+            builder.Entity<CourseTheme>().ToTable("CourseThemes");
+            builder.Entity<Lecture>().ToTable("Lectures");
+            builder.Entity<Lab>().ToTable("Labs");
+            builder.Entity<Quiz>().ToTable("Quizzes");
+
             builder.Entity<GraphNodeConfiguration>().ToTable("GraphNodeConfigurations");
 
         }
@@ -48,6 +61,21 @@ namespace eLearning.Core.Data
             builder.Entity<Graph>()
                 .HasMany(x => x.Edges)
                 .WithOne(x => x.Graph);
+
+            builder.Entity<CourseTheme>()
+               .HasOne(x => x.Lecture)
+               .WithOne(x => x.CourseTheme)
+               .HasForeignKey<Lecture>(x => x.CourseThemeId);
+
+            builder.Entity<CourseTheme>()
+                .HasOne(x => x.Lab)
+                .WithOne(x => x.CourseTheme)
+                .HasForeignKey<Lab>(x => x.CourseThemeId);
+
+            builder.Entity<CourseTheme>()
+                .HasOne(x => x.Quiz)
+                .WithOne(x => x.CourseTheme)
+                .HasForeignKey<Quiz>(x => x.CourseThemeId);
         }
     }
 }

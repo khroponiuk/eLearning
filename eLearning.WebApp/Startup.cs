@@ -52,6 +52,8 @@ namespace eLearning.WebApp
 
             services.AddTransient<GraphManager>();
             services.AddTransient<GraphProvider>();
+            services.AddTransient<CourseThemeManager>();
+            services.AddTransient<CourseThemeProvider>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

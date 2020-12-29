@@ -10,7 +10,7 @@ using eLearning.Core.Data;
 namespace eLearning.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201228103436_Initial")]
+    [Migration("20201228175523_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,6 +234,29 @@ namespace eLearning.Core.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("eLearning.Core.Entities.CourseTheme", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsLabEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsLectureEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsQuizEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CourseThemes");
+                });
+
             modelBuilder.Entity("eLearning.Core.Entities.Graph", b =>
                 {
                     b.Property<Guid>("Id")
@@ -262,7 +285,7 @@ namespace eLearning.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("764e5e19-f77a-4d05-b497-b41c7f4e7495"),
+                            Id = new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"),
                             Name = "Main graph",
                             Scale = 1.0,
                             TranslateX = 0.0,
@@ -295,10 +318,10 @@ namespace eLearning.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d4a279c6-0c33-4865-88fe-94b270fcdd76"),
-                            GraphId = new Guid("764e5e19-f77a-4d05-b497-b41c7f4e7495"),
-                            SourceNodeId = new Guid("a364bcea-83f2-47b4-9ba0-aed9898137ed"),
-                            TargetNodeId = new Guid("41eec919-0922-4047-ac52-300b2813b59a")
+                            Id = new Guid("4342b271-fc3d-4a45-a05e-44f2e34a68bc"),
+                            GraphId = new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"),
+                            SourceNodeId = new Guid("7aa3e7ef-e207-4b36-bace-86ab9598ce1c"),
+                            TargetNodeId = new Guid("0475dbca-7b81-4a7d-8a86-fa45e38da9ba")
                         });
                 });
 
@@ -329,16 +352,16 @@ namespace eLearning.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a364bcea-83f2-47b4-9ba0-aed9898137ed"),
-                            GraphId = new Guid("764e5e19-f77a-4d05-b497-b41c7f4e7495"),
+                            Id = new Guid("7aa3e7ef-e207-4b36-bace-86ab9598ce1c"),
+                            GraphId = new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"),
                             Name = "Intro",
                             X = 550,
                             Y = 270
                         },
                         new
                         {
-                            Id = new Guid("41eec919-0922-4047-ac52-300b2813b59a"),
-                            GraphId = new Guid("764e5e19-f77a-4d05-b497-b41c7f4e7495"),
+                            Id = new Guid("0475dbca-7b81-4a7d-8a86-fa45e38da9ba"),
+                            GraphId = new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"),
                             Name = "Topic",
                             X = 750,
                             Y = 370
@@ -368,6 +391,69 @@ namespace eLearning.Core.Migrations
                     b.HasIndex("GraphNodeId1");
 
                     b.ToTable("GraphNodeConfigurations");
+                });
+
+            modelBuilder.Entity("eLearning.Core.Entities.Lab", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseThemeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseThemeId")
+                        .IsUnique();
+
+                    b.ToTable("Labs");
+                });
+
+            modelBuilder.Entity("eLearning.Core.Entities.Lecture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseThemeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseThemeId")
+                        .IsUnique();
+
+                    b.ToTable("Lectures");
+                });
+
+            modelBuilder.Entity("eLearning.Core.Entities.Quiz", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseThemeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ExternalQuizId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("QuizSnippet")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseThemeId")
+                        .IsUnique();
+
+                    b.ToTable("Quizzes");
                 });
 
             modelBuilder.Entity("eLearning.Core.Models.ApplicationUser", b =>
@@ -509,6 +595,33 @@ namespace eLearning.Core.Migrations
                     b.HasOne("eLearning.Core.Entities.GraphNode", "GraphNode")
                         .WithMany()
                         .HasForeignKey("GraphNodeId1");
+                });
+
+            modelBuilder.Entity("eLearning.Core.Entities.Lab", b =>
+                {
+                    b.HasOne("eLearning.Core.Entities.CourseTheme", "CourseTheme")
+                        .WithOne("Lab")
+                        .HasForeignKey("eLearning.Core.Entities.Lab", "CourseThemeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eLearning.Core.Entities.Lecture", b =>
+                {
+                    b.HasOne("eLearning.Core.Entities.CourseTheme", "CourseTheme")
+                        .WithOne("Lecture")
+                        .HasForeignKey("eLearning.Core.Entities.Lecture", "CourseThemeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eLearning.Core.Entities.Quiz", b =>
+                {
+                    b.HasOne("eLearning.Core.Entities.CourseTheme", "CourseTheme")
+                        .WithOne("Quiz")
+                        .HasForeignKey("eLearning.Core.Entities.Quiz", "CourseThemeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

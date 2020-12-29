@@ -113,7 +113,7 @@ GraphInteractor.prototype.initializeInteractorEventListeners = function (svg) {
     if (graph.state.selectedNode == null)
       return;
 
-    graph.onNodeClick(graph.state.selectedNode.id)
+    graph.onNodeClick && graph.onNodeClick(graph.state.selectedNode.id)
   });
 }
 

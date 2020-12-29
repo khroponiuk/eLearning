@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
-import { Layout } from './components/Layout';
-import { GraphLayout } from './components/GraphLayout';
+import { Layout } from './components/layouts/Layout';
+import { GraphLayout } from './components/layouts/GraphLayout';
 import Home from './components/Home';
-import { CoursePage } from './components/CoursePage';
+import CoursePage from './components/CoursePage';
+import { CourseThemePage } from './components/course-theme/CourseThemePage';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
@@ -34,6 +35,7 @@ export default class App extends Component {
         <Route>
           <Layout>
             <Switch>
+              <Route path='/theme/:id' component={CourseThemePage} />
               <Route path='/counter' component={Counter} />
               <AuthorizeRoute path='/fetch-data' component={FetchData} />
               <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />

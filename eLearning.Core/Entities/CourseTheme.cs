@@ -14,9 +14,9 @@ namespace eLearning.Core.Entities
 
         public string Title { get; set; }
 
-        public bool IsLectureEnabled { get; set; }
-        public bool IsLabEnabled { get; set; }
-        public bool IsQuizEnabled { get; set; }
+        public bool IsLectureEnabled { get; set; } = true;
+        public bool IsLabEnabled { get; set; } = true;
+        public bool IsQuizEnabled { get; set; } = true;
 
         public Lecture Lecture { get; set; }
 
@@ -29,9 +29,11 @@ namespace eLearning.Core.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string FilePath { get; set; }
+
+        public Guid CourseThemeId { get; set; }
 
         public CourseTheme CourseTheme { get; set; }
     }
@@ -40,9 +42,11 @@ namespace eLearning.Core.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string FilePath { get; set; }
+
+        public Guid CourseThemeId { get; set; }
 
         public CourseTheme CourseTheme { get; set; }
     }
@@ -51,11 +55,13 @@ namespace eLearning.Core.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public int ExternalQuizId { get; set; }
 
         public string QuizSnippet { get; set; }
+
+        public Guid CourseThemeId { get; set; }
 
         public CourseTheme CourseTheme { get; set; }
     }

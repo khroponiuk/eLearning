@@ -18,6 +18,16 @@ const api = {
     });
 
     return response.json();
+  },
+  form: async (path, data) => {
+    const token = await authService.getAccessToken();
+    const response = await fetch(path, {
+      method: 'POST',
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}` },
+      body: data,
+    });
+
+    return response.json();
   }
 }
 

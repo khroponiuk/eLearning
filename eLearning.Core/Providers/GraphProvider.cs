@@ -44,7 +44,7 @@ namespace eLearning.Core.Providers
             return null;
         }
 
-        internal Graph Save(Graph graph)
+        public Graph Save(Graph graph)
         {
             var updateStrategy = GetGraphUdateStrategy(graph);
             

@@ -33,10 +33,7 @@ namespace eLearning.WebApp.Controllers
         [HttpGet]
         [Route("Main")]
         public Graph GetMainGraph()
-        {
-            var graph = graphManager.GetMainGraph();
-            return graph;
-        }
+            => graphManager.GetMainGraph();
 
         [HttpPost]
         [Route("Save")]
