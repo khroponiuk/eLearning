@@ -34,16 +34,6 @@ namespace eLearning.Core.Providers
                 .FirstOrDefault(x => x.Type == GraphType.MainGraph);
         }
 
-        public Graph GetGraphNode(Guid graphNodeId)
-        {
-            return null;
-        }
-
-        public Graph GetGraphNodeConfigruation(Guid graphNodeId)
-        {
-            return null;
-        }
-
         public Graph Save(Graph graph)
         {
             var updateStrategy = GetGraphUdateStrategy(graph);

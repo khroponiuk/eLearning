@@ -24,8 +24,8 @@ namespace eLearning.Core.Data
         public DbSet<Lab> Labs { get; set; }
         public DbSet<Quiz> Quizzes { get; set; }
 
-
-        //#public DbSet<GraphNodeConfiguration> GraphNodeConfigurations { get; set; }
+        public DbSet<QuizResult> QuizResults { get; set; }
+        public DbSet<LabSubmission> LabSubmissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -47,6 +47,9 @@ namespace eLearning.Core.Data
             builder.Entity<Lecture>().ToTable("Lectures");
             builder.Entity<Lab>().ToTable("Labs");
             builder.Entity<Quiz>().ToTable("Quizzes");
+
+            builder.Entity<QuizResult>().ToTable("QuizResults");
+            builder.Entity<LabSubmission>().ToTable("LabSubmissions");
 
             builder.Entity<GraphNodeConfiguration>().ToTable("GraphNodeConfigurations");
 

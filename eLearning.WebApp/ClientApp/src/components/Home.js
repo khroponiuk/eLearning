@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 
 
 const Home = withRouter(({ history }) => {
-  //const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [graphState, setGraphState] = useState({});
 

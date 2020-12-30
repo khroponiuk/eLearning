@@ -30,25 +30,6 @@ namespace eLearning.Core.Managers
             return graph;
         }
 
-        public Graph Create(Graph graphId)
-        {
-            if (graphId == null)
-                throw new ArgumentNullException(nameof(graphId), "Parameter cannot be null.");
-
-            return graphProvider.Get(Guid.Empty);
-        }
-
-        void ReevaluateGraphNodeStatus(Guid graphNodeId)
-        {
-            //var nodeConfiguration = GetGraphNodeConfiguration(graphNodeId)
-            //if (nodeConfiguration.labEnabled)
-            //  var lab = GetLabSubmission(graphNodeId)
-            //  if (lab == null)
-            //    return;
-            // ...
-            // SetGraphNodeCompletion(graphNodeId)
-        }
-
         public Graph Save(Graph graph)
         {
             return graphProvider.Save(graph);

@@ -21,22 +21,7 @@ export function Settings(props) {
       formData.append('lectureFile', lectureFileInput.files[0]);
       formData.append('labFile', labFileInput.files[0]);
 
-      debugger
-      //var  res = await api.form('api/theme/configure', formData);
-      //console.log(res)
-      //debugger
-
-      fetch('https://localhost:5001/api/theme/configure', {
-        method: 'POST',
-        body: formData,
-      })
-        .then(response => response.json())
-        .then(result => {
-          console.log('Success:', result);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+      await api.form('api/theme/configure', formData);
     }
     save();
   }
