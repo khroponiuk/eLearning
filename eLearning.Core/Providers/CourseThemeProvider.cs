@@ -60,6 +60,9 @@ namespace eLearning.Core.Providers
             currentEntity.Lecture = courseTheme.Lecture;
             currentEntity.Lab = courseTheme.Lab;
 
+            dbContext.Entry(courseTheme).State = EntityState.Modified;
+            dbContext.SaveChanges();
+
             return currentEntity;
 
         }

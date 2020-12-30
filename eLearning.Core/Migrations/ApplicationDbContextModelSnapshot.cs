@@ -283,7 +283,7 @@ namespace eLearning.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f3ae22cd-2094-4859-abbd-be8e8224c686"),
+                            Id = new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"),
                             Name = "Main graph",
                             Scale = 1.0,
                             TranslateX = 0.0,
@@ -316,10 +316,10 @@ namespace eLearning.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ea66eada-ee6d-450a-809a-65302cc4405d"),
-                            GraphId = new Guid("f3ae22cd-2094-4859-abbd-be8e8224c686"),
-                            SourceNodeId = new Guid("9451b81d-6f09-4d49-9f0d-838168fa432f"),
-                            TargetNodeId = new Guid("30c19e72-7c4c-4295-9622-7ceedbaa1819")
+                            Id = new Guid("eacedde2-9c6a-4e80-a8e1-f0421c3c8d14"),
+                            GraphId = new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"),
+                            SourceNodeId = new Guid("d473ed8f-4f67-4a74-ba2e-1f0c3ca66f53"),
+                            TargetNodeId = new Guid("88d29962-b9ae-4157-b198-eea0e8dc5888")
                         });
                 });
 
@@ -350,45 +350,20 @@ namespace eLearning.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9451b81d-6f09-4d49-9f0d-838168fa432f"),
-                            GraphId = new Guid("f3ae22cd-2094-4859-abbd-be8e8224c686"),
+                            Id = new Guid("d473ed8f-4f67-4a74-ba2e-1f0c3ca66f53"),
+                            GraphId = new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"),
                             Name = "Intro",
                             X = 550,
                             Y = 270
                         },
                         new
                         {
-                            Id = new Guid("30c19e72-7c4c-4295-9622-7ceedbaa1819"),
-                            GraphId = new Guid("f3ae22cd-2094-4859-abbd-be8e8224c686"),
+                            Id = new Guid("88d29962-b9ae-4157-b198-eea0e8dc5888"),
+                            GraphId = new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"),
                             Name = "Topic",
                             X = 750,
                             Y = 370
                         });
-                });
-
-            modelBuilder.Entity("eLearning.Core.Entities.GraphNodeConfiguration", b =>
-                {
-                    b.Property<Guid>("GraphNodeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("GraphNodeId1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("LabEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LectureEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("TestsEnabled")
-                        .HasColumnType("bit");
-
-                    b.HasKey("GraphNodeId");
-
-                    b.HasIndex("GraphNodeId1");
-
-                    b.ToTable("GraphNodeConfigurations");
                 });
 
             modelBuilder.Entity("eLearning.Core.Entities.Lab", b =>
@@ -469,8 +444,8 @@ namespace eLearning.Core.Migrations
                     b.Property<Guid>("CourseThemeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ExternalQuizId")
-                        .HasColumnType("int");
+                    b.Property<string>("ExternalQuizId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QuizSnippet")
                         .HasColumnType("nvarchar(max)");
@@ -643,13 +618,6 @@ namespace eLearning.Core.Migrations
                         .HasForeignKey("GraphId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("eLearning.Core.Entities.GraphNodeConfiguration", b =>
-                {
-                    b.HasOne("eLearning.Core.Entities.GraphNode", "GraphNode")
-                        .WithMany()
-                        .HasForeignKey("GraphNodeId1");
                 });
 
             modelBuilder.Entity("eLearning.Core.Entities.Lab", b =>

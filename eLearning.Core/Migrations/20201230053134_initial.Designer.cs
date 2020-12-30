@@ -10,8 +10,8 @@ using eLearning.Core.Data;
 namespace eLearning.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201228175523_Initial")]
-    partial class Initial
+    [Migration("20201230053134_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -285,7 +285,7 @@ namespace eLearning.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"),
+                            Id = new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"),
                             Name = "Main graph",
                             Scale = 1.0,
                             TranslateX = 0.0,
@@ -318,10 +318,10 @@ namespace eLearning.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4342b271-fc3d-4a45-a05e-44f2e34a68bc"),
-                            GraphId = new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"),
-                            SourceNodeId = new Guid("7aa3e7ef-e207-4b36-bace-86ab9598ce1c"),
-                            TargetNodeId = new Guid("0475dbca-7b81-4a7d-8a86-fa45e38da9ba")
+                            Id = new Guid("eacedde2-9c6a-4e80-a8e1-f0421c3c8d14"),
+                            GraphId = new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"),
+                            SourceNodeId = new Guid("d473ed8f-4f67-4a74-ba2e-1f0c3ca66f53"),
+                            TargetNodeId = new Guid("88d29962-b9ae-4157-b198-eea0e8dc5888")
                         });
                 });
 
@@ -352,45 +352,20 @@ namespace eLearning.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7aa3e7ef-e207-4b36-bace-86ab9598ce1c"),
-                            GraphId = new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"),
+                            Id = new Guid("d473ed8f-4f67-4a74-ba2e-1f0c3ca66f53"),
+                            GraphId = new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"),
                             Name = "Intro",
                             X = 550,
                             Y = 270
                         },
                         new
                         {
-                            Id = new Guid("0475dbca-7b81-4a7d-8a86-fa45e38da9ba"),
-                            GraphId = new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"),
+                            Id = new Guid("88d29962-b9ae-4157-b198-eea0e8dc5888"),
+                            GraphId = new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"),
                             Name = "Topic",
                             X = 750,
                             Y = 370
                         });
-                });
-
-            modelBuilder.Entity("eLearning.Core.Entities.GraphNodeConfiguration", b =>
-                {
-                    b.Property<Guid>("GraphNodeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("GraphNodeId1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("LabEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LectureEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("TestsEnabled")
-                        .HasColumnType("bit");
-
-                    b.HasKey("GraphNodeId");
-
-                    b.HasIndex("GraphNodeId1");
-
-                    b.ToTable("GraphNodeConfigurations");
                 });
 
             modelBuilder.Entity("eLearning.Core.Entities.Lab", b =>
@@ -411,6 +386,35 @@ namespace eLearning.Core.Migrations
                         .IsUnique();
 
                     b.ToTable("Labs");
+                });
+
+            modelBuilder.Entity("eLearning.Core.Entities.LabSubmission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LabId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RepoLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmissionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LabSubmissions");
                 });
 
             modelBuilder.Entity("eLearning.Core.Entities.Lecture", b =>
@@ -442,8 +446,8 @@ namespace eLearning.Core.Migrations
                     b.Property<Guid>("CourseThemeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ExternalQuizId")
-                        .HasColumnType("int");
+                    b.Property<string>("ExternalQuizId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QuizSnippet")
                         .HasColumnType("nvarchar(max)");
@@ -454,6 +458,34 @@ namespace eLearning.Core.Migrations
                         .IsUnique();
 
                     b.ToTable("Quizzes");
+                });
+
+            modelBuilder.Entity("eLearning.Core.Entities.QuizResult", b =>
+                {
+                    b.Property<int>("QuizAttemptId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExternalQuizId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfCorrectAnswers")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfUnanswered")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfWrongAnswers")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalScore")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("QuizAttemptId");
+
+                    b.ToTable("QuizResults");
                 });
 
             modelBuilder.Entity("eLearning.Core.Models.ApplicationUser", b =>
@@ -588,13 +620,6 @@ namespace eLearning.Core.Migrations
                         .HasForeignKey("GraphId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("eLearning.Core.Entities.GraphNodeConfiguration", b =>
-                {
-                    b.HasOne("eLearning.Core.Entities.GraphNode", "GraphNode")
-                        .WithMany()
-                        .HasForeignKey("GraphNodeId1");
                 });
 
             modelBuilder.Entity("eLearning.Core.Entities.Lab", b =>

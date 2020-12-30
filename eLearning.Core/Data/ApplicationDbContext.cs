@@ -50,9 +50,6 @@ namespace eLearning.Core.Data
 
             builder.Entity<QuizResult>().ToTable("QuizResults");
             builder.Entity<LabSubmission>().ToTable("LabSubmissions");
-
-            builder.Entity<GraphNodeConfiguration>().ToTable("GraphNodeConfigurations");
-
         }
 
         protected void ConfigureEntityRelations(ModelBuilder builder)

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace eLearning.Core.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -95,6 +95,23 @@ namespace eLearning.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LabSubmissions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    LabId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    UserName = table.Column<string>(nullable: true),
+                    RepoLink = table.Column<string>(nullable: true),
+                    Score = table.Column<int>(nullable: false),
+                    SubmissionTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LabSubmissions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PersistedGrants",
                 columns: table => new
                 {
@@ -109,6 +126,23 @@ namespace eLearning.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuizResults",
+                columns: table => new
+                {
+                    QuizAttemptId = table.Column<int>(nullable: false),
+                    ExternalQuizId = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    NumberOfCorrectAnswers = table.Column<int>(nullable: false),
+                    NumberOfWrongAnswers = table.Column<int>(nullable: false),
+                    NumberOfUnanswered = table.Column<int>(nullable: false),
+                    TotalScore = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuizResults", x => x.QuizAttemptId);
                 });
 
             migrationBuilder.CreateTable(
@@ -260,7 +294,7 @@ namespace eLearning.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    ExternalQuizId = table.Column<int>(nullable: false),
+                    ExternalQuizId = table.Column<string>(nullable: true),
                     QuizSnippet = table.Column<string>(nullable: true),
                     CourseThemeId = table.Column<Guid>(nullable: false)
                 },
@@ -316,46 +350,25 @@ namespace eLearning.Core.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "GraphNodeConfigurations",
-                columns: table => new
-                {
-                    GraphNodeId = table.Column<Guid>(nullable: false),
-                    LectureEnabled = table.Column<bool>(nullable: false),
-                    LabEnabled = table.Column<bool>(nullable: false),
-                    TestsEnabled = table.Column<bool>(nullable: false),
-                    GraphNodeId1 = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GraphNodeConfigurations", x => x.GraphNodeId);
-                    table.ForeignKey(
-                        name: "FK_GraphNodeConfigurations_GraphNodes_GraphNodeId1",
-                        column: x => x.GraphNodeId1,
-                        principalTable: "GraphNodes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.InsertData(
                 table: "Graphs",
                 columns: new[] { "Id", "Name", "Scale", "TranslateX", "TranslateY", "Type" },
-                values: new object[] { new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"), "Main graph", 1.0, 0.0, 0.0, 0 });
+                values: new object[] { new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"), "Main graph", 1.0, 0.0, 0.0, 0 });
 
             migrationBuilder.InsertData(
                 table: "GraphEdges",
                 columns: new[] { "Id", "GraphId", "SourceNodeId", "TargetNodeId" },
-                values: new object[] { new Guid("4342b271-fc3d-4a45-a05e-44f2e34a68bc"), new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"), new Guid("7aa3e7ef-e207-4b36-bace-86ab9598ce1c"), new Guid("0475dbca-7b81-4a7d-8a86-fa45e38da9ba") });
+                values: new object[] { new Guid("eacedde2-9c6a-4e80-a8e1-f0421c3c8d14"), new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"), new Guid("d473ed8f-4f67-4a74-ba2e-1f0c3ca66f53"), new Guid("88d29962-b9ae-4157-b198-eea0e8dc5888") });
 
             migrationBuilder.InsertData(
                 table: "GraphNodes",
                 columns: new[] { "Id", "GraphId", "Name", "X", "Y" },
-                values: new object[] { new Guid("7aa3e7ef-e207-4b36-bace-86ab9598ce1c"), new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"), "Intro", 550, 270 });
+                values: new object[] { new Guid("d473ed8f-4f67-4a74-ba2e-1f0c3ca66f53"), new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"), "Intro", 550, 270 });
 
             migrationBuilder.InsertData(
                 table: "GraphNodes",
                 columns: new[] { "Id", "GraphId", "Name", "X", "Y" },
-                values: new object[] { new Guid("0475dbca-7b81-4a7d-8a86-fa45e38da9ba"), new Guid("7dbc7ce9-f34b-478f-9591-e2c190c402cc"), "Topic", 750, 370 });
+                values: new object[] { new Guid("88d29962-b9ae-4157-b198-eea0e8dc5888"), new Guid("b3bbe605-7c2f-44c6-86d8-ebd2e8bd0961"), "Topic", 750, 370 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -411,11 +424,6 @@ namespace eLearning.Core.Migrations
                 name: "IX_GraphEdges_GraphId",
                 table: "GraphEdges",
                 column: "GraphId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GraphNodeConfigurations_GraphNodeId1",
-                table: "GraphNodeConfigurations",
-                column: "GraphNodeId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GraphNodes_GraphId",
@@ -475,16 +483,22 @@ namespace eLearning.Core.Migrations
                 name: "GraphEdges");
 
             migrationBuilder.DropTable(
-                name: "GraphNodeConfigurations");
+                name: "GraphNodes");
 
             migrationBuilder.DropTable(
                 name: "Labs");
+
+            migrationBuilder.DropTable(
+                name: "LabSubmissions");
 
             migrationBuilder.DropTable(
                 name: "Lectures");
 
             migrationBuilder.DropTable(
                 name: "PersistedGrants");
+
+            migrationBuilder.DropTable(
+                name: "QuizResults");
 
             migrationBuilder.DropTable(
                 name: "Quizzes");
@@ -496,13 +510,10 @@ namespace eLearning.Core.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "GraphNodes");
+                name: "Graphs");
 
             migrationBuilder.DropTable(
                 name: "CourseThemes");
-
-            migrationBuilder.DropTable(
-                name: "Graphs");
         }
     }
 }

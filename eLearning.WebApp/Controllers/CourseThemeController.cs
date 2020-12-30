@@ -32,27 +32,10 @@ namespace eLearning.WebApp.Controllers
         }
 
         [HttpPost]
-        [Route("Save")]
-        public CourseTheme SaveGraph(CourseTheme courseTheme)
-        {
-            return courseThemeManager.Save(courseTheme);
-        }
-
-        [HttpPost]
         [Route("Configure")]
-        public CourseTheme Configure(ThemeConfiguration themeConfiguration)
+        public CourseTheme Configure([FromForm]ThemeConfiguration themeConfiguration)
         {
-            return null;
+            return courseThemeManager.Configure(themeConfiguration);
         }
-    }
-
-    public class ThemeConfiguration
-    {
-        public Guid id { get; set; }
-        public bool isLectureEnabled { get; set; }
-        public bool isLabEnabled { get; set; }
-        public bool isQuizEnabled { get; set; }
-        public IFormFile lectureFile { get; set; }
-        public IFormFile labFile { get; set; }
     }
 }

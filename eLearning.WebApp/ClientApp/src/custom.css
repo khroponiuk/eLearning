@@ -27,3 +27,8 @@ code {
 .custom-file-input {
   cursor: pointer;
 }
+
+.iframe-holder {
+  text-align: center;
+  width: 100%;
+}

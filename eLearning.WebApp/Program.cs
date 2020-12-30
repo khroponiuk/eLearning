@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eLearning.Core.Data;
+using eLearning.Core.Managers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,8 @@ namespace eLearning.WebApp
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(exception, "An error occurred during seed database.");
                 }
+                var fileStorageManager = services.GetRequiredService<FileStorageManager>();
+                fileStorageManager.EnsureStorageCreated();
             }
 
             host.Run();

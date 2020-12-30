@@ -6,6 +6,8 @@ import { Lab } from './Lab';
 import { Lecture } from './Lecture';
 import authService from '../api-authorization/AuthorizeService'
 import { Settings } from './Settings';
+import { Quiz } from './Quiz';
+import { QuizStats } from './QuizStats';
 
 
 export function CourseThemePage(props) {
@@ -29,12 +31,8 @@ export function CourseThemePage(props) {
     fetchData();
   }, []);
 
-  function saveCourseTheme() {
-
-  }
-
-  function handleLectureFileUpload(file) {
-
+  function configurationUpdateHandler(data) {
+    setThemeState(data);
   }
 
   return (
@@ -72,24 +70,30 @@ export function CourseThemePage(props) {
               <Card.Body>
                 <Tab.Content>
                   <Tab.Pane eventKey="lecture">
-                    <Lecture filePath={testFile} />
+                    <Lecture filePath={themeState.lecture.filePath} />
                   </Tab.Pane>
                   <Tab.Pane eventKey="lab">
-                    <Lab filePath={testFile} />
+                    <Lab filePath={themeState.lab.filePath} />
                   </Tab.Pane>
                   <Tab.Pane eventKey="quiz">
-                    <p> Quiz </p>
+                    <Quiz id={themeState.quiz.externalQuizId} />
                   </Tab.Pane>
                   {
                     isAdmin ?
                       <>
                         <Tab.Pane eventKey="stats">
-                          <p>Stats</p>
+                          <QuizStats id={themeState.quiz.externalQuizId} />
                         </Tab.Pane>
                         <Tab.Pane eventKey="settings">
-                          <Settings 
-                            lectureFile={themeState.lecture.filePath}
-                            lectureFileUpload={handleLectureFileUpload} />
+                          <Settings
+                            themeId={themeState.id}
+                            isLectureEnabled={themeState.isLectureEnabled}
+                            isLabEnabled={themeState.isLabEnabled}
+                            isQuizEnabled={themeState.isQuizEnabled}
+                            lectureFilePath={themeState.lecture.filePath}
+                            labFilePath={themeState.lab.filePath}
+                            quizId={themeState.quiz.externalQuizId}
+                            setThemeState={configurationUpdateHandler} />
                         </Tab.Pane>
                       </>
                       : null

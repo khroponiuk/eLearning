@@ -57,7 +57,7 @@ namespace eLearning.Core.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public int ExternalQuizId { get; set; }
+        public string ExternalQuizId { get; set; }
 
         public string QuizSnippet { get; set; }
 
